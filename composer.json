@@ -1,0 +1,6 @@
+{
+    "require": {
+        "codeception/module-webdriver": "*",
+        "codeception/module-asserts": "*"
+    }
+}
