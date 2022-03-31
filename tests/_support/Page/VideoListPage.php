@@ -57,7 +57,7 @@ class VideoListPage
     {
         $duration = round($this->I->executeJS('return document.querySelector(arguments[0]).duration', [self::$previewVideoElement]));
         $randomTime = rand(0, $duration);
-        $this->I->executeAsyncJS(sprintf('setTimeout(arguments[0], %d)', $randomTime * 1000));
+        sleep($randomTime);
         $currentTime = round($this->I->executeJS('return document.querySelector(arguments[0]).currentTime', [self::$previewVideoElement]));
 
         Assert::assertEquals($randomTime, $currentTime);
@@ -67,7 +67,7 @@ class VideoListPage
     public function checkCurrentTimeAfterEndOfPreviewVideo(): VideoListPage
     {
         $duration = $this->I->executeJS('return document.querySelector(arguments[0]).duration', [self::$previewVideoElement]);
-        $this->I->executeAsyncJS(sprintf('setTimeout(arguments[0], %d)', $duration * 1000));
+        sleep($duration);
         $currentTime = $this->I->executeJS('return document.querySelector(arguments[0]).currentTime', [self::$previewVideoElement]);
 
         Assert::assertEquals(0, $currentTime);
