@@ -14,7 +14,7 @@ class VideoListPage
     private static $searchButton = 'button[class*="mini-suggest__button"]';
     private static $spinnerElement = '.spin2_js_inited.spin2_progress_yes.spin2_size_m';
     private static $videoElements = '.serp-item_type_search';
-    private static $previewVideoElement = 'video';
+    private static $previewVideoElement = '.thumb-preview__target_playing';
 
     public function __construct(\AcceptanceTester $I)
     {
