@@ -13,6 +13,8 @@ class VideoPreviewTestCest
             ->clickSearchButton()
             ->waitForDownloadOfVideoListIsOver()
             ->mouseOverToVideoByNumber(1)
-            ->checkPreviewVideoIsVisible();
+            ->checkPreviewVideoIsVisible()
+            ->checkCurrentTimeAtRandomTimePreviewVideo()
+            ->checkCurrentTimeAfterEndOfPreviewVideo();
     }
 }

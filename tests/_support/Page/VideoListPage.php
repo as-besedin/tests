@@ -3,6 +3,7 @@
 namespace Page;
 
 use Codeception\Util\Locator;
+use PHPUnit\Framework\Assert;
 
 class VideoListPage
 {
@@ -49,6 +50,27 @@ class VideoListPage
     {
         $this->I->waitForElementVisible(self::$previewVideoElement);
         $this->I->seeElement(self::$previewVideoElement);
+        return $this;
+    }
+
+    public function checkCurrentTimeAtRandomTimePreviewVideo(): VideoListPage
+    {
+        $duration = round($this->I->executeJS('return document.querySelector(arguments[0]).duration', [self::$previewVideoElement]));
+        $randomTime = rand(0, $duration);
+        $this->I->executeAsyncJS(sprintf('setTimeout(arguments[0], %d)', $randomTime * 1000));
+        $currentTime = round($this->I->executeJS('return document.querySelector(arguments[0]).currentTime', [self::$previewVideoElement]));
+
+        Assert::assertEquals($randomTime, $currentTime);
+        return $this;
+    }
+
+    public function checkCurrentTimeAfterEndOfPreviewVideo(): VideoListPage
+    {
+        $duration = $this->I->executeJS('return document.querySelector(arguments[0]).duration', [self::$previewVideoElement]);
+        $this->I->executeAsyncJS(sprintf('setTimeout(arguments[0], %d)', $duration * 1000));
+        $currentTime = $this->I->executeJS('return document.querySelector(arguments[0]).currentTime', [self::$previewVideoElement]);
+
+        Assert::assertEquals(0, $currentTime);
         return $this;
     }
 }
