@@ -55,10 +55,10 @@ class VideoListPage
 
     public function checkCurrentTimeAtRandomTimePreviewVideo(): VideoListPage
     {
-        $duration = round($this->I->executeJS('return document.querySelector(arguments[0]).duration', [self::$previewVideoElement]));
+        $duration = self::getPreviewVideoDuration();
         $randomTime = rand(0, $duration);
         sleep($randomTime);
-        $currentTime = round($this->I->executeJS('return document.querySelector(arguments[0]).currentTime', [self::$previewVideoElement]));
+        $currentTime = self::getPreviewVideoCurrentTime();
 
         Assert::assertEquals($randomTime, $currentTime);
         return $this;
@@ -66,11 +66,19 @@ class VideoListPage
 
     public function checkCurrentTimeAfterEndOfPreviewVideo(): VideoListPage
     {
-        $duration = $this->I->executeJS('return document.querySelector(arguments[0]).duration', [self::$previewVideoElement]);
+        $duration = self::getPreviewVideoDuration();
         sleep($duration);
-        $currentTime = $this->I->executeJS('return document.querySelector(arguments[0]).currentTime', [self::$previewVideoElement]);
+        $currentTime = self::getPreviewVideoCurrentTime();
 
         Assert::assertEquals(0, $currentTime);
         return $this;
+    }
+
+    private function getPreviewVideoDuration(): int {
+        return $this->I->executeJS('return document.querySelector(arguments[0]).duration', [self::$previewVideoElement]);
+    }
+
+    private function getPreviewVideoCurrentTime(): int {
+        return $this->I->executeJS('return document.querySelector(arguments[0]).currentTime', [self::$previewVideoElement]);
     }
 }
